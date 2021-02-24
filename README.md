@@ -7,7 +7,7 @@
 4. RESTful API
 
 ### Some Key Explanations:
-1. Laravel is use to demonstrate as much understanding as possible. Tt comes out of the box with all the toolkit required. Such as docker, frontend components, faker and other utility which saves a lot of time.
+1. Laravel is use to demonstrate as much understanding as possible. It comes out of the box with all the toolkit required. Such as docker, frontend components, faker and other utility which saves a lot of time.
 2. RESTful API is used instead of GraphQL because there was no complexity to fetch complex data. As REST API has a solid standard to make a strict rule for a user to follow. This helps us to put some default validation.
 3. As time was consumed in simplifying the short URL algorithm that's why the frontend task is pending. Otherwise, VueJS would be used because it is shipped by default with the Laravel framework.
 
@@ -20,16 +20,16 @@
 ### Setup:
 1. Get git clone `git clone https://github.com/Modelizer/werkspot.git`
 1. Copy `.env.sample` to `.env`
-1. Run `vendor/bin/sail up`
+1. Run `vendor/bin/sail up` to initialise the container. In background it uses docker-compose file.
 1. Login to container `docker-compose exec laravel.test bash`
-1. Run `composer install`
-1. To phpunit to see all the testcases are passing. `vendor/bin/phpunit`
+1. Run `composer install` inside the container. If some how you are facing any issue then please run `composer install` on your host machine.
+1. Run phpunit to see all the testcases are passing. `vendor/bin/phpunit`
 
 ### Some Keyfiles to look into it:
 1. Werkspot url compressor is treated as a library and extracted to its folder `modules/CompressUrl`
 1. Middleware is a concept in the Laravel which help to any important thing with the request before sending it to Controller. Here is use `App\Http\Middleware\SplitTesting` middleware to swap URL compressor driver according ot 30/70 AB testing.
 1. By default `WerkspotUrlDriver` is bind with `UrlCompressorDriverContract` interface. Please see `AppServiceProvider` class.
-1. `BitlyUrlDriver` acts as a adaptor for composer package `shivella/laravel-bitly`
+1. `BitlyUrlDriver` acts as an adaptor for `shivella/laravel-bitly` composer package.
 
 ### Shorter URL mechanism:
 1. Base62 character methodology is used.
