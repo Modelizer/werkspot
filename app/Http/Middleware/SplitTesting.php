@@ -18,14 +18,12 @@ class SplitTesting
 
     public function __construct(protected Application $app, protected UrlGenerator $urlGenerator)
     {
-        // Werkspot's url driver is a default url shortener driver.
-        $this->app->bind(UrlCompressorDriverContract::class, WerkspotUrlDriver::class);
         $this->urlCompressor = $this->app->get(UrlCompressorDriverContract::class);
     }
 
     public function handle(Request $request, Closure $next)
     {
-        // If URL exists then we need to check do we already have it or not.
+        // If URL exists then we need to inform user without processing anything.
         if ($url = $request['url']) {
             try {
                 return new JsonResponse([
