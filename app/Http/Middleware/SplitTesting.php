@@ -38,14 +38,14 @@ class SplitTesting
         }
 
         // Binding Url shortener driver according to 30/70 AB testing rule.
-        static::isLessThanThirtyOne() ?:
+        static::isGreatorThan30Percent() ?:
             app()->bind(UrlCompressorDriverContract::class, BitlyUrlDriver::class);
 
         return $next($request);
     }
 
-    public static function isLessThanThirtyOne(): bool
+    public static function isGreatorThan30Percent(): bool
     {
-        return mt_rand(1, 100) <= 30;
+        return mt_rand(1, 100) >= 30;
     }
 }

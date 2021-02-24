@@ -12,6 +12,7 @@ class UrlShortenerControllerTest extends TestCase
 {
     use WithFaker;
 
+    /** @test */
     public function it_should_return_a_short_url()
     {
         $response = $this->post('/api/url', [

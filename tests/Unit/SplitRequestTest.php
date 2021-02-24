@@ -17,12 +17,12 @@ class SplitRequestTest extends TestCase
 
         // 10000 is the total request we sent
         for ($i = 1; $i <= 10000; $i++) {
-            SplitTesting::isLessThanThirtyOne() ? $werkspotUrlCompressRequests++ : null;
+            SplitTesting::isGreatorThan30Percent() ? $werkspotUrlCompressRequests++ : null;
         }
 
         $roundingPercentage = ceil($werkspotUrlCompressRequests / 100);
 
-        // This shows the percentage is between 29,30 and 31.
-        $this->assertTrue(in_array($roundingPercentage, [29, 30, 31]));
+        // This shows the percentage is between 70, 71, 72
+        $this->assertTrue(in_array($roundingPercentage, [70, 71, 72]));
     }
 }
