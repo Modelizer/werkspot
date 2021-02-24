@@ -1,62 +1,39 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400"></a></p>
+## Werkspot Assignment (Application to Build Short URLs)
 
-<p align="center">
-<a href="https://travis-ci.org/laravel/framework"><img src="https://travis-ci.org/laravel/framework.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+### Technology used:
+1. PHP 8.0
+2. Laravel 8
+3. Docker
+4. RESTful API
 
-## About Laravel
+### Some Key Explanations:
+1. Laravel is use to demonstrate as much understanding as possible. Tt comes out of the box with all the toolkit required. Such as docker, frontend components, faker and other utility which saves a lot of time.
+2. RESTful API is used instead of GraphQL because there was no complexity to fetch complex data. As REST API has a solid standard to make a strict rule for a user to follow. This helps us to put some default validation.
+3. As time was consumed in simplifying the short URL algorithm that's why the frontend task is pending. Otherwise, VueJS would be used because it is shipped by default with the Laravel framework.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### What has been done?
+1. Added Workspot URL shortener functionality.
+1. Added Bitly integration. The default token is already present in `.env.sample` file.
+1. Added 30/70 AB testing. 30% is Bitly API and 70% is our API.
+1. Important testcases are written but there are some missing.
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+### Setup:
+1. Get git clone `git clone https://github.com/Modelizer/werkspot.git`
+1. Copy `.env.sample` to `.env`
+1. Run `vendor/bin/sail up`
+1. Login to container `docker-compose exec laravel.test bash`
+1. Run `composer install`
+1. To phpunit to see all the testcases are passing. `vendor/bin/phpunit`
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+### Some Keyfiles to look into it:
+1. Werkspot url compressor is treated as a library and extracted to its folder `modules/CompressUrl`
+1. Middleware is a concept in the Laravel which help to any important thing with the request before sending it to Controller. Here is use `App\Http\Middleware\SplitTesting` middleware to swap URL compressor driver according ot 30/70 AB testing.
+1. By default `WerkspotUrlDriver` is bind with `UrlCompressorDriverContract` interface. Please see `AppServiceProvider` class.
+1. `BitlyUrlDriver` acts as a adaptor for composer package `shivella/laravel-bitly`
 
-## Learning Laravel
-
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 1500 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-## Laravel Sponsors
-
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the Laravel [Patreon page](https://patreon.com/taylorotwell).
-
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Cubet Techno Labs](https://cubettech.com)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[Many](https://www.many.co.uk)**
-- **[Webdock, Fast VPS Hosting](https://www.webdock.io/en)**
-- **[DevSquad](https://devsquad.com)**
-- **[Curotec](https://www.curotec.com/)**
-- **[OP.GG](https://op.gg)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Shorter URL mechanism:
+1. Base62 character methodology is used.
+1. Two simplify this mechanism two classes are created. One to handle all the Base62 letters and their indexes and 2nd class to generate the url. Please see `Werkspot\CompressUrl\Base62` and `Werkspot\CompressUrl\UrlGenerator`.
+1. The next short URL is generated by using the previous URL.
+1. As per the assignment, there is no complexity related to storage. Therefore Redis is used to store the URLs as it also helps us to be faster retrieving.
+1. All the URLs are saved in the URL's Redis database.
